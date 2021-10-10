@@ -11,16 +11,16 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.anandusem2lab1.databinding.FragmentListViewBinding;
+import com.example.anandusem2lab1.databinding.FragmentEditBinding;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ListViewFragment#newInstance} factory method to
+ * Use the {@link EditFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListViewFragment extends Fragment {
+public class EditFragment extends Fragment {
 
-    private FragmentListViewBinding binding;
+    private FragmentEditBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,8 +31,7 @@ public class ListViewFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-
-    public ListViewFragment() {
+    public EditFragment() {
         // Required empty public constructor
     }
 
@@ -42,11 +41,11 @@ public class ListViewFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ListViewFragment.
+     * @return A new instance of fragment EditFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ListViewFragment newInstance(String param1, String param2) {
-        ListViewFragment fragment = new ListViewFragment();
+    public static EditFragment newInstance(String param1, String param2) {
+        EditFragment fragment = new EditFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -57,8 +56,6 @@ public class ListViewFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -69,25 +66,26 @@ public class ListViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentListViewBinding.inflate(inflater);
-
+        binding = FragmentEditBinding.inflate(inflater);
+        setHasOptionsMenu(true);
         return binding.getRoot();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.listview_menu_items, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.editview_menu_items, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
-            case R.id.addItem: {
-                NavHostFragment.findNavController(this).navigate(R.id.action_listViewFragment_to_editFragment);
-                break;
+            case R.id.save_item: {
+                return NavHostFragment.findNavController(this).popBackStack();
             }
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

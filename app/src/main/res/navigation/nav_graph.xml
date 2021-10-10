@@ -7,6 +7,15 @@
     <fragment
         android:id="@+id/listViewFragment"
         android:name="com.example.anandusem2lab1.ListViewFragment"
-        android:label="fragment_list_view"
-        tools:layout="@layout/fragment_list_view" />
+        android:label="User list"
+        tools:layout="@layout/fragment_list_view">
+        <action
+            android:id="@+id/action_listViewFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.anandusem2lab1.EditFragment"
+        android:label="User Details"
+        tools:layout="@layout/fragment_edit" />
 </navigation>
