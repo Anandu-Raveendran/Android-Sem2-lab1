@@ -10,48 +10,24 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.anandusem2lab1.Database.AppDatabase;
+import com.example.anandusem2lab1.Database.User;
 import com.example.anandusem2lab1.databinding.FragmentListViewBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ListViewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.List;
+
+
 public class ListViewFragment extends Fragment {
 
     private FragmentListViewBinding binding;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private List<User> userList;
+    private MyRecyclerViewAdaptor adaptor;
 
     public ListViewFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ListViewFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ListViewFragment newInstance(String param1, String param2) {
-        ListViewFragment fragment = new ListViewFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -59,10 +35,6 @@ public class ListViewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -71,7 +43,21 @@ public class ListViewFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentListViewBinding.inflate(inflater);
 
+        adaptor = new MyRecyclerViewAdaptor(getContext());
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        binding.recyclerView.addItemDecoration(decoration);
+
+        binding.recyclerView.setAdapter(adaptor);
+        updateList();
+
         return binding.getRoot();
+    }
+
+    void updateList() {
+        AppDatabase db = AppDatabase.getDbInstance(getContext());
+        userList = db.userDao().getAllUsers();
+        adaptor.setUserList(userList);
     }
 
     @Override

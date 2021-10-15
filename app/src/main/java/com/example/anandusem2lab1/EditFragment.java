@@ -1,5 +1,6 @@
 package com.example.anandusem2lab1;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -7,20 +8,29 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.anandusem2lab1.Database.AppDatabase;
+import com.example.anandusem2lab1.Database.User;
 import com.example.anandusem2lab1.databinding.FragmentEditBinding;
+
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EditFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditFragment extends Fragment {
+public class EditFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
     private FragmentEditBinding binding;
+    private Date star_date;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -68,6 +78,14 @@ public class EditFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentEditBinding.inflate(inflater);
         setHasOptionsMenu(true);
+
+        binding.startEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment datePickerFragment = new DatePickerFragment(EditFragment.this);
+                datePickerFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
+            }
+        });
         return binding.getRoot();
     }
 
@@ -82,10 +100,27 @@ public class EditFragment extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.save_item: {
+
+                AppDatabase db = AppDatabase.getDbInstance(getContext());
+                User user = new User(binding.nameEditText.getText().toString(),
+                        Integer.valueOf(binding.ageEditText.getText().toString()),
+                        Double.valueOf(binding.tuitionEditText.getText().toString()), star_date);
+
+                db.userDao().insertUser(user);
+
                 return NavHostFragment.findNavController(this).popBackStack();
             }
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+        Calendar c = Calendar.getInstance();
+        c.set(year, month, dayOfMonth);
+        String currentDateString = DateFormat.getDateInstance().format(c.getTime());
+        binding.startEditText.setText(currentDateString);
+        star_date = c.getTime();
+    }
 }
