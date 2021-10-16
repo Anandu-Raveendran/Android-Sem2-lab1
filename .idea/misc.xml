@@ -4,7 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/ravia/AndroidStudioProjects/AnanduSem2lab1/app/src/main/res/layout/fragment_edit.xml" value="0.32708333333333334" />
+        <entry key="..\:/Users/ravia/AndroidStudioProjects/AnanduSem2lab1/app/src/main/res/layout/fragment_list_view.xml" value="0.5473958333333333" />
         <entry key="..\:/Users/ravia/AndroidStudioProjects/AnanduSem2lab1/app/src/main/res/layout/recycler_item_layout.xml" value="0.32708333333333334" />
+        <entry key="..\:/Users/ravia/AndroidStudioProjects/AnanduSem2lab1/app/src/main/res/menu/editview_menu_items.xml" value="0.2824074074074074" />
+        <entry key="..\:/Users/ravia/AndroidStudioProjects/AnanduSem2lab1/app/src/main/res/menu/listview_menu_items.xml" value="0.32708333333333334" />
       </map>
     </option>
   </component>

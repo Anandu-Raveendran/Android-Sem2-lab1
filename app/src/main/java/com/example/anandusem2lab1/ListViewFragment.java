@@ -1,6 +1,7 @@
 package com.example.anandusem2lab1;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.anandusem2lab1.Database.AppDatabase;
@@ -20,11 +21,12 @@ import com.example.anandusem2lab1.databinding.FragmentListViewBinding;
 import java.util.List;
 
 
-public class ListViewFragment extends Fragment {
+public class ListViewFragment extends Fragment implements MyRecyclerViewAdaptor.ListDelegate {
 
     private FragmentListViewBinding binding;
     private List<User> userList;
     private MyRecyclerViewAdaptor adaptor;
+    private AppDatabase db;
 
     public ListViewFragment() {
         // Required empty public constructor
@@ -34,7 +36,7 @@ public class ListViewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
+        db = AppDatabase.getDbInstance(getContext());
     }
 
     @Override
@@ -43,11 +45,8 @@ public class ListViewFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentListViewBinding.inflate(inflater);
 
-        adaptor = new MyRecyclerViewAdaptor(getContext());
+        adaptor = new MyRecyclerViewAdaptor(getContext(), this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-        binding.recyclerView.addItemDecoration(decoration);
-
         binding.recyclerView.setAdapter(adaptor);
         updateList();
 
@@ -55,8 +54,8 @@ public class ListViewFragment extends Fragment {
     }
 
     void updateList() {
-        AppDatabase db = AppDatabase.getDbInstance(getContext());
         userList = db.userDao().getAllUsers();
+        Log.i("anandu", "Got date size " + userList.size());
         adaptor.setUserList(userList);
     }
 
@@ -75,5 +74,13 @@ public class ListViewFragment extends Fragment {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void listItemClicked(View v, int position) {
+        Log.i("anandu", "clicked position " + position);
+        ListViewFragmentDirections.ActionListViewFragmentToEditFragment action = ListViewFragmentDirections.actionListViewFragmentToEditFragment();
+        action.setUser(userList.get(position));
+        Navigation.findNavController(v).navigate(action);
     }
 }

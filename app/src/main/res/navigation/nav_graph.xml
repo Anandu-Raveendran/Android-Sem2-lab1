@@ -17,5 +17,11 @@
         android:id="@+id/editFragment"
         android:name="com.example.anandusem2lab1.EditFragment"
         android:label="User Details"
-        tools:layout="@layout/fragment_edit" />
+        tools:layout="@layout/fragment_edit">
+        <argument
+            android:name="user"
+            app:argType="com.example.anandusem2lab1.Database.User"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>
